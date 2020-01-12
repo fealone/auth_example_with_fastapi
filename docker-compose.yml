@@ -1,0 +1,33 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: password
+  api:
+    depends_on:
+      - mysql
+    build: src
+    links:
+      - mysql
+    expose:
+      - 8000
+    volumes:
+      - ./src:/var/www/app
+    command: "run reload"
+  nginx:
+    image: nginx
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+volumes:
+  mysql:
+    driver: local
