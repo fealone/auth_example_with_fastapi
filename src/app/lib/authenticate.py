@@ -34,4 +34,4 @@ async def authenticate_user(
         raise HTTPException(
                 status_code=401,
                 detail="Incorrect email or password",
-                headers={"WWW-Authenticate": "Basci"})
+                headers={"WWW-Authenticate": "Basic"})
