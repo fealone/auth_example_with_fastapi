@@ -19,7 +19,7 @@ services:
       - 8000
     volumes:
       - ./src:/var/www/app
-    command: "run reload"
+    command: "uvicorn app.main:app --host 0.0.0.0 --reload"
   nginx:
     image: nginx
     depends_on:
