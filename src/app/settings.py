@@ -1,7 +1,6 @@
 import datetime
 
 PRIVATE_PEM = open("app/certs/private_key.pem", "r").read()
-PUBLIC_PEM = open("app/certs/public_key.pem", "r").read()
 
 TOKEN_EXPIRE = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
 
