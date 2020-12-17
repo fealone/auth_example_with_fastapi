@@ -1,12 +1,16 @@
-from fastapi import Depends, HTTPException
-from sqlalchemy.orm import Session
-from fastapi import APIRouter
+from app.lib.database import SessionLocal, engine
+from app.settings import JWKS, PRIVATE_PEM, TOKEN_EXPIRE
+from app.user import crud, models
+
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import (
         HTTPBasic,
         HTTPBasicCredentials)
 
-from app.user import crud, models
-from app.lib.database import SessionLocal, engine
+import jwt
+
+from sqlalchemy.orm import Session
+
 
 router = APIRouter()
 
@@ -26,10 +30,21 @@ def get_db():
 async def authenticate_user(
         db: Session = Depends(get_db),
         credentials: HTTPBasicCredentials = Depends(security)):
-    if crud.authenticate_user(db,
-                              credentials.username,
-                              credentials.password):
-        return True
+    user = crud.authenticate_user(db,
+                                  credentials.username,
+                                  credentials.password)
+    if user:
+        payload = {
+            "exp": TOKEN_EXPIRE,
+            "email": user.email,
+            "user": user.name
+        }
+        token = jwt.encode(payload,
+                           PRIVATE_PEM,
+                           algorithm=JWKS["keys"][0]["alg"],
+                           headers={"kid": JWKS["keys"][0]["kid"]})
+
+        return {"access_token": token}
     else:
         raise HTTPException(
                 status_code=401,

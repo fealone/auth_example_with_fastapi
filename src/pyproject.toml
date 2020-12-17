@@ -26,6 +26,8 @@ typing-extensions = "3.7.4.3"
 uvicorn = "0.13.1"
 uvloop = "0.14.0"
 websockets = "8.1"
+PyJWT = "^1.7.1"
+cryptography = "^3.3.1"
 
 [tool.poetry.dev-dependencies]
 

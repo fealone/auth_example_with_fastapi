@@ -1,10 +1,10 @@
-from fastapi import Depends
-from fastapi import APIRouter
 from app.lib.authenticate import authenticate_user
+
+from fastapi import APIRouter, Depends
 
 router = APIRouter()
 
 
-@router.get("/user/helloworld", tags=["user"])
-async def get_helloworld(is_auth: bool = Depends(authenticate_user)):
-    return "HelloWorld"
+@router.post("/user/_authenticate", tags=["user"])
+async def authenticate(token: bool = Depends(authenticate_user)):
+    return token
