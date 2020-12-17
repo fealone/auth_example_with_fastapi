@@ -4,8 +4,6 @@ PRIVATE_PEM = open("app/certs/private_key.pem", "r").read()
 
 TOKEN_EXPIRE = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
 
-SECRET_KEY = 'N>_l/hM<M(RjbiI(=DA(mrq!H#L"V<ZoA/vZ>P+/uj@+x4BQMg?_[}Q^uOj3%vT'
-
 JWKS = {
     "keys": [
         {
